@@ -1,0 +1,22 @@
+#container{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    aside{
+        width: 200px;
+        background-color: #ccc;
+    }
+    section{
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    header{
+        height: 60px;
+        background-color: blue;
+
+    }
+    main{
+        flex: 1;
+    }
+}
