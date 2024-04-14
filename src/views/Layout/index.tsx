@@ -1,10 +1,11 @@
 import { Outlet, } from 'react-router-dom';
 import  './layout.scss'
-Outlet
+import Aside from './aside';
 function layout() {
   return (
     <section id="container">
-      <aside>aside
+      <aside>
+        <Aside></Aside>
       </aside>
       <section>
         <header>header</header>
