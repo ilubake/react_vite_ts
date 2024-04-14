@@ -5,6 +5,5 @@ import './index.scss'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
   <App />
-    {/* The rest of your app goes here */}
   </BrowserRouter>
 );
