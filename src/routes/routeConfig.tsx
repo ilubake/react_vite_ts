@@ -25,6 +25,20 @@ import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/ico
           key: 'user',
           icon: <SettingOutlined />,
           component: <User />,
+          children: [
+            {
+              label: '用户1',
+              key: 'user1',
+              icon: <SettingOutlined />,
+              component: <User />,
+            },
+            {
+              label: '首页1',
+              key: 'home1',
+              icon: <MailOutlined />,
+              component:<Home />,
+            },
+          ],
         },
         {
           label: '首页',
