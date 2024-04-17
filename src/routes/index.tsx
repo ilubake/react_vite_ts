@@ -21,12 +21,17 @@ const GetRouters = (): React.ReactElement | null => {
     path: "/",
     element: <Navigate to="/layout/home" replace />,
   };
+  // 添加OffRouter页面404"
+  const offRouter: RouteObject = {
+    path: "*",
+    element: <Navigate to="/offRouter" replace />,
+  };
 
   // 转换自定义路由为 RouteObject
   const routeObjects = mapToRouteObjects(route_items);
 
   // 将默认路由添加到路由对象数组的开头
-  const allRouteObjects = [defaultRoute, ...routeObjects];
+  const allRouteObjects = [defaultRoute,offRouter, ...routeObjects];
 
   // 使用 useRoutes 钩子来处理路由配置
   const routes = useRoutes(allRouteObjects);
