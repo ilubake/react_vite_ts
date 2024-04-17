@@ -23,7 +23,7 @@ function OffRouter() {
 
       <ul style={{ textAlign: 'left', margin: '24px 0', paddingLeft: '24px' }}>
         <li>
-          <Link to="/layout/home">返回首页</Link>
+          <Link to="/">返回首页</Link>
         </li>
  
         <li>

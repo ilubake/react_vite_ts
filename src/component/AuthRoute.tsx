@@ -1,16 +1,38 @@
-import { useLocation,Navigate } from "react-router-dom";
-interface AuthRouteProps{
-    children:JSX.Element;
+import route_items from "../routes/routeConfig";
+import type { CustomRouteItem } from "../routes/routeConfig";
+import { useLocation, Navigate } from "react-router-dom";
+interface AuthRouteProps {
+  children: JSX.Element;
 }
-function AuthRoute({children}:AuthRouteProps ){
-    const token=sessionStorage.getItem('token')as string|null;
-    const {pathname}=useLocation();
-    console.log('pathname',pathname);
-    if (pathname=='/login'||token) {
-        return children
-    }else{
-        return <Navigate to={'/login'} replace></Navigate>
+function findChildByKey(
+  routeItems: CustomRouteItem[],
+  targetKey: string
+): CustomRouteItem | undefined {
+  for (const item of routeItems) {
+    if (item.key === targetKey) {
+      return item;
     }
-    return children
+    if (item.children && item.children.length > 0) {
+      const foundInChildren = findChildByKey(item.children, targetKey);
+      if (foundInChildren !== undefined) {
+        return foundInChildren;
+      }
+    }
+  }
+
+  return undefined;
 }
-export default AuthRoute
+function AuthRoute({ children }: AuthRouteProps) {
+  const token = sessionStorage.getItem("token") as string | null;
+  const { pathname } = useLocation();
+  console.log(pathname);
+  const pass = findChildByKey(route_items, pathname.split("/").slice(-1)[0])
+    ?.meta?.isNoPassAuth;
+
+  if (pass || token) {
+    return children;
+  } else {
+    return <Navigate to={"/login"} replace></Navigate>;
+  }
+}
+export default AuthRoute;

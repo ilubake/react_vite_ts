@@ -14,7 +14,7 @@ const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const token:string='asdassssssssdwwwwwwwwwwwrwasd';
     sessionStorage.setItem('token',JSON.stringify(token));
-    navigate('/layout/home')
+    navigate('/layout')
     console.log("Success:", values);
   };
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (

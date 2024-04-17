@@ -10,14 +10,19 @@ const Aside: React.FC = () => {
   const [defaultSelectedKeys,]=useState<string>(sessionStorage.getItem('defaultSelectedKeys')??'');
   const [defaultOpenKeys]=useState<string[]>(JSON.parse(sessionStorage.getItem('defaultOpenKeys')??'[]'));
   const navigate = useNavigate();
-  // console.log(asideData);
+  type MenuItem = Required<MenuProps>['items'][number];
   function mapToMenuProps(route_items: CustomRouteItem[]): MenuProps['items'] {
     return route_items
-      .filter((item) => !item.hidden)
-      .map((item) => ({
-        ...item,
-        children: item.children ? mapToMenuProps(item.children) : undefined,
-      }));
+      .filter((item) => !item?.meta?.hidden)
+      .map(item=>{
+        return{
+          key:item.key,
+          icon:item.icon,
+          children:item.children ? mapToMenuProps(item.children) : undefined,
+          label:item.label,
+          type:item.type,
+        }as MenuItem
+      });
   }
   const onClick: MenuProps['onClick'] = (e) => {
     const path=e.keyPath.reverse().join('/');
