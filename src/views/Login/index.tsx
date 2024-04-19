@@ -1,19 +1,31 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import type { FormProps } from "antd";
+import {useTypedSelector}from '../../store/rootTypes'
+import {selectDev}from '../../store/slice/mySlice/mySlice'
 import { Form, Input, Button } from "antd";
 // import { Form, Input, Checkbox, Button } from "antd";
 import "./index.scss";
+import { login } from "../../api/user";
 const LogIn: React.FC = () => {
+console.log(useTypedSelector(selectDev));
 const navigate = useNavigate();
   type FieldType = {
     username?: string;
     password?: string;
     remember?: string;
   };
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    const token:string='asdassssssssdwwwwwwwwwwwrwasd';
-    sessionStorage.setItem('token',JSON.stringify(token));
+  const onFinish: FormProps<FieldType>["onFinish"] = async(values) => {
+    const reqParams={
+      userName:'',
+      password:'',
+    }
+    const data=await login(reqParams);
+    if (data?.token) {
+    sessionStorage.setItem('token',JSON.stringify(data?.token));
+    } else {
+      console.log(data.message);
+    }
     navigate('/layout')
     console.log("Success:", values);
   };
