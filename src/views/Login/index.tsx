@@ -1,33 +1,47 @@
-import React from "react";
-import { useNavigate } from 'react-router-dom';
-import type { FormProps } from "antd";
-import {useTypedSelector}from '../../store/rootTypes'
-import {selectDev}from '../../store/slice/mySlice/mySlice'
+import React,{useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Form, Input, Button } from "antd";
-// import { Form, Input, Checkbox, Button } from "antd";
+import type { FormProps } from "antd";
 import "./index.scss";
-import { login } from "../../api/user";
+import { loginData } from "../../api/user/types";
+import { useDispatch } from "react-redux";
+import { useTypedSelector, AppDispatch } from "../../store/rootTypes";
+import {
+  selectInitialSlice,
+  userLogin,
+} from "../../store/slice/initialSlice/initialSlice";
+import showMessage from "../../utils/showMessage";
 const LogIn: React.FC = () => {
-console.log(useTypedSelector(selectDev));
-const navigate = useNavigate();
+  const dispatch:AppDispatch = useDispatch();
+  const {data,} = useTypedSelector(selectInitialSlice);
+  const navigate = useNavigate();
   type FieldType = {
     username?: string;
     password?: string;
     remember?: string;
   };
-  const onFinish: FormProps<FieldType>["onFinish"] = async(values) => {
-    const reqParams={
-      userName:'',
-      password:'',
-    }
-    const data=await login(reqParams);
-    if (data?.token) {
-    sessionStorage.setItem('token',JSON.stringify(data?.token));
-    } else {
-      console.log(data.message);
-    }
-    navigate('/layout')
-    console.log("Success:", values);
+    // 定义一个 useEffect 来观察 data 的变化
+    useEffect(() => {
+
+      if (data) {
+        // 检测data 更新
+        console.log('Fetched data:', data);
+        if (data.token) {
+          sessionStorage.setItem("token", JSON.stringify(data?.token));
+          navigate("/layout");
+          console.log("Success:",);
+        }else{
+          showMessage('xxx')
+        }
+      }
+    }, [data,navigate]); // 只有当 data 变化时，这个 effect 才会重新运行
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    console.log("values", values);
+    const reqParams = {
+      userName: values.username,
+      password: values.password,
+    }as loginData;
+    dispatch(userLogin(reqParams));
   };
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
@@ -76,10 +90,7 @@ const navigate = useNavigate();
             { required: true, message: "请输入密码" },
             () => ({
               validator(_, value) {
-                if (
-                  !value ||
-                  (value==='12345')
-                ) {
+                if (value) {
                   return Promise.resolve();
                 }
                 return Promise.reject(new Error("密码为12345,请修改"));
