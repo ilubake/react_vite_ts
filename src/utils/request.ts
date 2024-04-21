@@ -1,8 +1,7 @@
 import { Result } from "./types";
+import { getToken,removeToken} from "./cookies";
 import axios,{AxiosRequestConfig,AxiosError} from "axios";
-const getToken = (): string | null => {
-  return sessionStorage.getItem('token');
-};
+import showMessage from "./showMessage";
 const service = axios.create({
     baseURL: 'api',
     timeout: 1000,
@@ -35,7 +34,9 @@ service.interceptors.response.use(function (response) {
     if (error?.response?.status) {
       switch (error.response.status) {
         case 401://jwt过期
-        localStorage.removeItem('token')
+        removeToken();
+        window.location.replace('/login');
+        showMessage('登录状态失效，请重新登录');
           //重新登录relogin()
           break;
       

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginData } from "../../../api/user/types";
-import { login } from "../../../api/user";
+import { loginData } from "@api/user/types";
+import { login } from "@api/user";
 import { RootState } from "../../rootTypes";
 const initialState: RootState["initialSlice"] = {
   initialData: {

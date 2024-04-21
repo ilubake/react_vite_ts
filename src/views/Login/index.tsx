@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 import type { FormProps } from "antd";
 import "./index.scss";
-import { loginData } from "../../api/user/types";
+import { loginData } from "@api/user/types";
 import { useDispatch } from "react-redux";
-import { useTypedSelector, AppDispatch } from "../../store/rootTypes";
+import { useTypedSelector, AppDispatch } from "@store/rootTypes";
 import {
   selectInitialSlice,
   userLogin,
-} from "../../store/slice/initialSlice/initialSlice";
-import showMessage from "../../utils/showMessage";
+} from "@store/slice/initialSlice/initialSlice";
+import showMessage from "@utils/showMessage";
+import { setToken } from "@utils/cookies";
 const LogIn: React.FC = () => {
   const dispatch:AppDispatch = useDispatch();
   const {initialData} = useTypedSelector(selectInitialSlice);
@@ -23,7 +24,7 @@ const LogIn: React.FC = () => {
       if (initialData) {
         console.log('Fetched data:', initialData);
         if (initialData.token) {
-          sessionStorage.setItem("token", JSON.stringify(initialData?.token));
+          setToken(JSON.stringify(initialData?.token));
           navigate("/layout");
           console.log("Success:",);
         }else{

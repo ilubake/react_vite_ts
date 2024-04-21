@@ -1,4 +1,4 @@
-import { http } from "./../../utils/request";
+import { http } from "@utils/request";
 import { loginData, loginRes } from "./types";
 //登录
 export function login(data: loginData): Promise<loginRes> {

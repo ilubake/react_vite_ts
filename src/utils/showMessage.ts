@@ -2,6 +2,7 @@
 interface modalProps{
     types?:string;
     isBtn?:boolean;
+    // onOk?:antdFun
 }
 const showMessage=(message:string,type?:string,date?:modalProps)=>{
     console.log(message,type||'info',date);

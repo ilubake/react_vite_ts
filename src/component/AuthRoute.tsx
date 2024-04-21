@@ -1,6 +1,7 @@
 import route_items from "../routes/routeConfig";
 import type { CustomRouteItem } from "../routes/routeConfig";
 import { useLocation, Navigate } from "react-router-dom";
+import{getToken}from '@utils/cookies'
 interface AuthRouteProps {
   children: JSX.Element;
 }
@@ -23,7 +24,7 @@ function findChildByKey(
   return undefined;
 }
 function AuthRoute({ children }: AuthRouteProps) {
-  const token = sessionStorage.getItem("token") as string | null;
+  const token = getToken();
   const { pathname } = useLocation();
   console.log(pathname);
   const pass = findChildByKey(route_items, pathname.split("/").slice(-1)[0])

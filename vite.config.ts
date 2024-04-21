@@ -10,6 +10,14 @@ export default defineConfig({
       },
     },
   },
+  resolve: {
+    alias: {
+      '@components':new URL('./src/components', import.meta.url).pathname,
+      '@utils': new URL('./src/utils', import.meta.url).pathname,          
+      '@api':new URL('./src/api', import.meta.url).pathname,          
+      '@store':new URL('./src/store', import.meta.url).pathname,           
+    },
+  },
   server: {
     port: 8081,
     host: "0.0.0.0",
