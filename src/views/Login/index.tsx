@@ -13,7 +13,7 @@ import {
 import showMessage from "../../utils/showMessage";
 const LogIn: React.FC = () => {
   const dispatch:AppDispatch = useDispatch();
-  const initialData = useTypedSelector(selectInitialSlice);
+  const {initialData} = useTypedSelector(selectInitialSlice);
   const navigate = useNavigate();
   type FieldType = {
     username?: string;

@@ -7,10 +7,10 @@ export interface UserData {
     id: string;
     name: string;
     email: string;
+    token:string;
   }
 export interface loginRes{
     data?:UserData;
-    token?:string;
     message?:string;
     resCode?:number;
 }
