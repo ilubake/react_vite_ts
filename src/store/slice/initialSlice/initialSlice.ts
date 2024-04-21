@@ -1,22 +1,26 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk,} from "@reduxjs/toolkit";
 import { loginData  } from "../../../api/user/types";
 import { login } from "../../../api/user";
 import {RootState}from '../../rootTypes';
 const initialState: RootState['initialSlice'] = {
-  isDev:true,
-  data: {},
+  initialData:{
+    id: '',
+    name: '',
+    email: '',
+  },
+  token:'',
   loading: false,
   error: null,
 };
-// createAsyncThunk接收两个主要参数：typePrefix: 字符串表示这是一个与initialSlice相关的异步操作，用于获取数据,Redux Toolkit会基于这个前缀自动创建三种不同类型的action，分别对应异步操作的pending、fulfilled和rejected状态。payloadCreator: 异步函数，负责执行实际的异步操作。当dispatch这个Thunk action时，会调用此函数。此函数应返回一个Promise，Promise的resolve结果将作为fulfilled action的payload，reject原因将作为rejected action的payload。 /
+//typePrefix: 字符串表示这是一个与initialSlice相关的异步操作，用于获取数据,Redux Toolkit会基于这个前缀自动创建三种不同类型的action，分别对应异步操作的pending、fulfilled和rejected状态。payloadCreator: 异步函数，负责执行实际的异步操作。当dispatch这个Thunk action时，会调用此函数。此函数应返回一个Promise，Promise的resolve结果将作为fulfilled action的payload，reject原因将作为rejected action的payload。 /
 export const userLogin = createAsyncThunk(
   'initialSlice/userLogin', // 唯一标识
-  async (arg:loginData ) => {
+  async (credentials:loginData ) => {
     try {
-      const response = await login(arg); 
+      const response = await login(credentials); 
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw new Error(extractErrorMessage(error));
     }
   }
@@ -33,7 +37,7 @@ const initialSlice = createSlice({
   reducers: {
     // 同步action
     setData: (state, action) => {
-      state.data = action.payload;
+      state.initialData = action.payload;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;
@@ -51,7 +55,10 @@ const initialSlice = createSlice({
       .addCase(
         userLogin .fulfilled,
         (state, action) => {
-          state.data = action.payload;
+          const{data,token}=action.payload;
+          console.log('action.payload',data);
+          state.initialData=data;
+          state.token=token;
           state.loading = false;
         }
       )

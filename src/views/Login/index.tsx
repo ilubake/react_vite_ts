@@ -13,28 +13,24 @@ import {
 import showMessage from "../../utils/showMessage";
 const LogIn: React.FC = () => {
   const dispatch:AppDispatch = useDispatch();
-  const {data,} = useTypedSelector(selectInitialSlice);
+  const initialData = useTypedSelector(selectInitialSlice);
   const navigate = useNavigate();
   type FieldType = {
     username?: string;
     password?: string;
-    remember?: string;
   };
-    // 定义一个 useEffect 来观察 data 的变化
     useEffect(() => {
-
-      if (data) {
-        // 检测data 更新
-        console.log('Fetched data:', data);
-        if (data.token) {
-          sessionStorage.setItem("token", JSON.stringify(data?.token));
+      if (initialData) {
+        console.log('Fetched data:', initialData);
+        if (initialData.token) {
+          sessionStorage.setItem("token", JSON.stringify(initialData?.token));
           navigate("/layout");
           console.log("Success:",);
         }else{
           showMessage('xxx')
         }
       }
-    }, [data,navigate]); // 只有当 data 变化时，这个 effect 才会重新运行
+    }, [initialData,navigate]); 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     console.log("values", values);
     const reqParams = {
@@ -100,13 +96,6 @@ const LogIn: React.FC = () => {
         >
           <Input.Password placeholder="密码:12345" />
         </Form.Item>
-        {/* <Form.Item<FieldType>
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item> */}
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
             登入

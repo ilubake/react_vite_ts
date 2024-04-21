@@ -1,10 +1,14 @@
-import { loginRes  } from "../../../api/user/types";
 // 用户数据模型
 
+export interface UserData {
+  id: string;
+  name: string;
+  email: string;
+}
 // 定义YourSlice的state结构
 export interface InitialSliceState {
-  isDev:boolean;
-  data?: loginRes;
+  initialData?: UserData;
   loading: boolean;
   error: string | null;
+  token?: string;
 }

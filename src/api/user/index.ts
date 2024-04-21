@@ -1,5 +1,4 @@
-import service from "../../utils/request";
-// import store from "../../store/store";
+import { http } from './../../utils/request';
 import { loginData,loginRes } from "./types";
 //登录
 export function login(data:loginData):Promise<loginRes>{
@@ -14,6 +13,7 @@ export function login(data:loginData):Promise<loginRes>{
                 },
                 token:'asdfffffffffdsfds',
                 message:'Success',
+                resCode:0,
             });
 
           }else {
@@ -21,7 +21,7 @@ export function login(data:loginData):Promise<loginRes>{
             }
         })
     } else {
-    return service.post('',data)
+    return http.post('login',data)
     }
 
 }
