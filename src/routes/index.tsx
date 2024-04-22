@@ -6,11 +6,18 @@ import type { CustomRouteItem } from "./routeConfig";
 function mapToRouteObjects(customRoutes: CustomRouteItem[]): RouteObject[] {
   return [
     ...customRoutes.map((item) => {
-      return {
-        path: item.key,
+      const routeObject: RouteObject = {
+        path: item.path,
         element: item.component,
-        children: item.children ? mapToRouteObjects(item.children) : undefined,
+        index: item.index,
       };
+      if (item.index === true) {
+        routeObject.children = undefined;
+      } else {
+        // Item is a CustomRouteItemBase
+        routeObject.children = item.children ? mapToRouteObjects(item.children) : undefined;
+      }
+      return routeObject;
     }),
   ];
 }
@@ -19,14 +26,19 @@ const GetRouters = (): React.ReactElement | null => {
   // 添加默认导航至 "/layout/home"
   const defaultRoute: RouteObject = {
     path: "/",
-    element: <Navigate to="/layout/home" replace />,
+    element: <Navigate to="/layout" replace />,
+  };
+  // 添加OffRouter页面404"
+  const offRouter: RouteObject = {
+    path: "*",
+    element: <Navigate to="/offRouter" replace />,
   };
 
   // 转换自定义路由为 RouteObject
   const routeObjects = mapToRouteObjects(route_items);
 
   // 将默认路由添加到路由对象数组的开头
-  const allRouteObjects = [defaultRoute, ...routeObjects];
+  const allRouteObjects = [defaultRoute,offRouter, ...routeObjects];
 
   // 使用 useRoutes 钩子来处理路由配置
   const routes = useRoutes(allRouteObjects);
